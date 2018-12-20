@@ -33,12 +33,18 @@ Use the build rules provided by qt.bzl to build your project. See qt.bzl for whi
 ```
 # BUILD
 
-load("@bazel_rules_qt//:qt.bzl", "qt_cc_library")
+load("@bazel_rules_qt//:qt.bzl", "qt_cc_library", "qt_ui_library")
 
 qt_cc_library(
     name = "MyWidget",
     src = "MyWidget.cc",
     hdr = "MyWidget.h",
+    deps = ["@qt//:qt_widgets"],
+)
+
+qt_ui_library(
+    name = "mainwindow",
+    ui = "mainwindow.ui",
     deps = ["@qt//:qt_widgets"],
 )
 
@@ -49,6 +55,7 @@ cc_binary(
     deps = [
         "@qt//:qt_widgets",
         ":MyWidget",
+        ":mainwindow",
     ],
 )
 ```
