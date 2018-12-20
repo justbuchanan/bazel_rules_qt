@@ -4,7 +4,7 @@ These bazel rules and BUILD targets make it easy to use Qt from C++ projects bui
 
 ## Usage
 
-You can either copy the qt.BUILD and qt.bzl files into your project or if you're using git, add this project as a submodule.
+You can either copy the qt.BUILD and qt.bzl files into your project, add this project as a submodule if you're using git or use a git_repository rule to fetch the rules.
 
 Configure your WORKSPACE to include the qt libraries:
 
