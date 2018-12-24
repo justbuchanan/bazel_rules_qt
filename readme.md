@@ -8,7 +8,7 @@ You can either copy the qt.BUILD and qt.bzl files into your project, add this pr
 
 Configure your WORKSPACE to include the qt libraries:
 
-```
+```python
 # WORKSPACE
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
@@ -30,7 +30,7 @@ new_local_repository(
 
 Use the build rules provided by qt.bzl to build your project. See qt.bzl for which rules are available.
 
-```
+```python
 # BUILD
 
 load("@bazel_rules_qt//:qt.bzl", "qt_cc_library", "qt_ui_library")
