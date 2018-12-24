@@ -1,4 +1,4 @@
-def qt_ui_library(name, ui, deps):
+def qt_ui_library(name, ui, deps, **kwargs):
     """Compiles a QT UI file and makes a library for it.
 
     Args:
@@ -17,9 +17,10 @@ def qt_ui_library(name, ui, deps):
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
+        **kwargs
     )
 
-def qt_resource(name, qrc_file, deps):
+def qt_resource(name, qrc_file, deps, **kwargs):
     """Turns a .qrc file into a cc_library.
 
     Args:
@@ -39,6 +40,7 @@ def qt_resource(name, qrc_file, deps):
         name = name,
         srcs = [outfile],
         alwayslink = 1,
+        **kwargs
     )
 
 def qt_cc_library(name, src, hdr, normal_hdrs = [], deps = None, **kwargs):
