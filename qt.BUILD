@@ -62,3 +62,10 @@ cc_library(
     ],
     deps = [":qt_core"],
 )
+
+cc_library(
+    name = "qt_opengl",
+    hdrs = glob(["QtOpenGL/**"]),
+    includes = ["."],
+    linkopts = ["-lQtOpenGL"],
+)
