@@ -25,7 +25,7 @@ cc_library(
     linkopts = [
         "-lQt5Widgets",
     ],
-    deps = [":qt_core"],
+    deps = [":qt_core", ":qt_gui"],
 )
 
 cc_library(
@@ -67,5 +67,5 @@ cc_library(
     name = "qt_opengl",
     hdrs = glob(["QtOpenGL/**"]),
     includes = ["."],
-    linkopts = ["-lQtOpenGL"],
+    linkopts = ["-lQt5OpenGL"],
 )
