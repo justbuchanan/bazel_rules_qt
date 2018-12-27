@@ -58,7 +58,7 @@ def qt_cc_library(name, src, hdr, normal_hdrs = [], deps = None, **kwargs):
       ui_deps: Dependencies for the UI file.
       kwargs: Any additional arguments are passed to the cc_library rule.
     """
-    header_path = "%s/%s" % (PACKAGE_NAME, hdr) if len(PACKAGE_NAME) > 0 else hdr
+    header_path = "%s/%s" % (native.package_name(), hdr) if len(native.package_name()) > 0 else hdr
     native.genrule(
         name = "%s_moc" % name,
         srcs = [hdr],
