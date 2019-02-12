@@ -37,6 +37,7 @@ cc_library(
     ],
     deps = [
         ":qt_gui",
+        ":qt_qml",
     ],
 )
 
