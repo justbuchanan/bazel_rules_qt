@@ -38,6 +38,7 @@ cc_library(
     deps = [
         ":qt_gui",
         ":qt_qml",
+        ":qt_qml_models",
     ],
 )
 
@@ -52,6 +53,17 @@ cc_library(
         ":qt_core",
         ":qt_network",
     ],
+)
+
+cc_library(
+    name = "qt_qml_models",
+    linkopts = [
+        "-lQt5QmlModels",
+    ],
+    hdrs = glob(
+        ["QtQmlModels/**"],
+    ),
+    includes = ["."],
 )
 
 cc_library(
