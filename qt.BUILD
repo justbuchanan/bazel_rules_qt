@@ -82,3 +82,36 @@ cc_library(
     includes = ["."],
     linkopts = ["-lQt5OpenGL"],
 )
+
+cc_library(
+    name = "qt_3d",
+    hdrs = glob([
+        "Qt3DAnimation/**",
+        "Qt3DCore/**",
+        "Qt3DExtras/**",
+        "Qt3DInput/**",
+        "Qt3DLogic/**",
+        "Qt3DQuick/**",
+        "Qt3DQuickAnimation/**",
+        "Qt3DQuickExtras/**",
+        "Qt3DQuickInput/**",
+        "Qt3DQuickRender/**",
+        "Qt3DQuickScene2D/**",
+        "Qt3DRender/**",
+    ]),
+    includes = ["."],
+    linkopts = [
+        "-lQt53DAnimation",
+        "-lQt53DCore",
+        "-lQt53DExtras",
+        "-lQt53DInput",
+        "-lQt53DLogic",
+        "-lQt53DQuick",
+        "-lQt53DQuickAnimation",
+        "-lQt53DQuickExtras",
+        "-lQt53DQuickInput",
+        "-lQt53DQuickRender",
+        "-lQt53DQuickScene2D",
+        "-lQt53DRender",
+    ],
+)
