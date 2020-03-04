@@ -51,12 +51,16 @@ def qt_resource(name, files, **kwargs):
     qrc_file = name + "_qrc.qrc"
     genqrc(name = name + "_qrc", files = files)
 
+    # every resource cc_library that is linked into the same binary needs a
+    # unique 'name'.
+    rsrc_name = native.package_name().replace("/", "_") + "_" + name
+
     outfile = name + "_gen.cpp"
     native.genrule(
         name = name + "_gen",
         srcs = [qrc_file] + files,
         outs = [outfile],
-        cmd = "cp $(location %s) . && rcc --name %s --output $(OUTS) %s" % (qrc_file, qrc_file, qrc_file),
+        cmd = "cp $(location %s) . && rcc --name %s --output $(OUTS) %s" % (qrc_file, rsrc_name, qrc_file),
     )
     native.cc_library(
         name = name,
