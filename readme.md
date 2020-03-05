@@ -2,6 +2,8 @@
 
 These bazel rules and BUILD targets make it easy to use Qt from C++ projects built with bazel.
 
+Note that unlike many libraries used through bazel, qt is dynamically linked, meaning that the qt-dependent programs you build with bazel will use the qt libraries installed by the system package manager. Thus the users of your programs will also need to install qt.
+
 ## Usage
 
 You can either copy the qt.BUILD and qt.bzl files into your project, add this project as a submodule if you're using git or use a git_repository rule to fetch the rules.
