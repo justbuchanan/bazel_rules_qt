@@ -1,0 +1,30 @@
+# Docs: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+executors:
+  main:
+    docker:
+      - image: debian:buster
+
+jobs:
+  build:
+    executor: main
+    environment:
+    steps:
+      # setup bazel
+      - run: echo 'export GOPATH="/go"' >> $BASH_ENV
+      - run: apt-get update && apt-get install -y golang git
+      - run: go get github.com/bazelbuild/bazelisk
+      - run: ln -sf /go/bin/bazelisk /usr/bin/bazel
+
+      - checkout
+
+      - run: apt-get install -y qt5-default
+      - run: bazel build //...
+
+
+# Orchestrate or schedule a set of jobs
+workflows:
+  build:
+    jobs:
+      - build
