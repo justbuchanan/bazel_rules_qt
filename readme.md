@@ -4,6 +4,10 @@ These bazel rules and BUILD targets make it easy to use Qt from C++ projects bui
 
 Note that unlike many libraries used through bazel, qt is dynamically linked, meaning that the qt-dependent programs you build with bazel will use the qt libraries installed by the system package manager. Thus the users of your programs will also need to install qt.
 
+## Platform support
+
+This project currently only works on Linux, although eventually I'd like it to support Windows and Mac OS X as well.
+
 ## Usage
 
 You can either copy the qt.BUILD and qt.bzl files into your project, add this project as a submodule if you're using git or use a git_repository rule to fetch the rules.
@@ -16,14 +20,14 @@ Configure your WORKSPACE to include the qt libraries:
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
-    name = "bazel_rules_qt",
+    name = "com_justbuchanan_rules_qt",
     remote = "https://github.com/justbuchanan/bazel_rules_qt.git",
     branch = "master",
 )
 
 new_local_repository(
     name = "qt",
-    build_file = "@bazel_rules_qt//:qt.BUILD",
+    build_file = "@com_justbuchanan_rules_qt//:qt.BUILD",
     path = "/usr/include/qt", # May need configuring for your installation
     # For Qt5 on Ubuntu 16.04
     # path = "/usr/include/x86_64-linux-gnu/qt5/"
@@ -35,12 +39,12 @@ Use the build rules provided by qt.bzl to build your project. See qt.bzl for whi
 ```python
 # BUILD
 
-load("@bazel_rules_qt//:qt.bzl", "qt_cc_library", "qt_ui_library")
+load("@com_justbuchanan_rules_qt//:qt.bzl", "qt_cc_library", "qt_ui_library")
 
 qt_cc_library(
     name = "MyWidget",
-    src = "MyWidget.cc",
-    hdr = "MyWidget.h",
+    srcs = ["MyWidget.cc"],
+    hdrs = ["MyWidget.h"],
     deps = ["@qt//:qt_widgets"],
 )
 
