@@ -39,22 +39,24 @@ def qt_ui_library(name, ui, deps, **kwargs):
 
 # generate a qrc file that lists each of the input files.
 def _genqrc(ctx):
+    qrc_output = ctx.outputs.qrc
     qrc_content = "<RCC>\n  <qresource prefix=\\\"/\\\">"
     for f in ctx.files.files:
         qrc_content += "\n    <file>%s</file>" % f.path
     qrc_content += "\n  </qresource>\n</RCC>"
-    cmd = ["echo", "\"%s\"" % qrc_content, ">", ctx.outputs.qrc.path]
+    cmd = ["echo", "\"%s\"" % qrc_content, ">", qrc_output.path]
     ctx.actions.run_shell(
         command = " ".join(cmd),
-        outputs = [ctx.outputs.qrc],
+        outputs = [qrc_output],
     )
+    return [OutputGroupInfo(qrc = depset([qrc_output]))]
 
 genqrc = rule(
     implementation = _genqrc,
     attrs = {
         "files": attr.label_list(allow_files = True, mandatory = True),
+        "qrc": attr.output(),
     },
-    outputs = {"qrc": "%{name}.qrc"},
 )
 
 def qt_resource(name, files, **kwargs):
@@ -66,7 +68,7 @@ def qt_resource(name, files, **kwargs):
       kwargs: extra args to pass to the cc_library
     """
     qrc_file = name + "_qrc.qrc"
-    genqrc(name = name + "_qrc", files = files)
+    genqrc(name = name + "_qrc", files = files, qrc = qrc_file)
 
     # every resource cc_library that is linked into the same binary needs a
     # unique 'name'.
