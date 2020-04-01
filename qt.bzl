@@ -68,7 +68,7 @@ def qt_resource(name, files, **kwargs):
       kwargs: extra args to pass to the cc_library
     """
     qrc_file = name + "_qrc.qrc"
-    genqrc(name = name + "_qrc", files = files, qrc = name + ".qrc")
+    genqrc(name = name + "_qrc", files = files, qrc = qrc_file)
 
     # every resource cc_library that is linked into the same binary needs a
     # unique 'name'.
