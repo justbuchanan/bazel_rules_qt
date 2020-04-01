@@ -45,10 +45,10 @@ def _genqrc(ctx):
     for f in ctx.files.files:
         qrc_content += "\n    <file>%s</file>" % f.path
     qrc_content += "\n  </qresource>\n</RCC>"
-    cmd = ["echo", "\"%s\"" % qrc_content, ">", ctx.outputs.qrc.path]
+    cmd = ["echo", "\"%s\"" % qrc_content, ">", qrc_output.path]
     ctx.actions.run_shell(
         command = " ".join(cmd),
-        outputs = [ctx.outputs.qrc],
+        outputs = [qrc_output],
     )
     return [OutputGroupInfo(qrc = depset([qrc_output]))]
 
