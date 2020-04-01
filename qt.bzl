@@ -39,8 +39,7 @@ def qt_ui_library(name, ui, deps, **kwargs):
 
 # generate a qrc file that lists each of the input files.
 def _genqrc(ctx):
-    qrc_name = ctx.attr.name + ".qrc"
-    qrc_output = ctx.actions.declare_file(qrc_name)
+    qrc_output = ctx.outputs.qrc
     qrc_content = "<RCC>\n  <qresource prefix=\\\"/\\\">"
     for f in ctx.files.files:
         qrc_content += "\n    <file>%s</file>" % f.path
@@ -56,6 +55,7 @@ genqrc = rule(
     implementation = _genqrc,
     attrs = {
         "files": attr.label_list(allow_files = True, mandatory = True),
+        "qrc": attr.output(),
     },
 )
 
@@ -68,7 +68,7 @@ def qt_resource(name, files, **kwargs):
       kwargs: extra args to pass to the cc_library
     """
     qrc_file = name + "_qrc.qrc"
-    genqrc(name = name + "_qrc", files = files)
+    genqrc(name = name + "_qrc", files = files, qrc = name + ".qrc")
 
     # every resource cc_library that is linked into the same binary needs a
     # unique 'name'.
