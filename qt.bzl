@@ -39,6 +39,8 @@ def qt_ui_library(name, ui, deps, **kwargs):
 
 # generate a qrc file that lists each of the input files.
 def _genqrc(ctx):
+    qrc_name = ctx.attr.name + ".qrc"
+    qrc_output = ctx.actions.declare_file(qrc_name)
     qrc_content = "<RCC>\n  <qresource prefix=\\\"/\\\">"
     for f in ctx.files.files:
         qrc_content += "\n    <file>%s</file>" % f.path
@@ -48,13 +50,13 @@ def _genqrc(ctx):
         command = " ".join(cmd),
         outputs = [ctx.outputs.qrc],
     )
+    return [OutputGroupInfo(qrc = depset([qrc_output]))]
 
 genqrc = rule(
     implementation = _genqrc,
     attrs = {
         "files": attr.label_list(allow_files = True, mandatory = True),
     },
-    outputs = {"qrc": "%{name}.qrc"},
 )
 
 def qt_resource(name, files, **kwargs):
