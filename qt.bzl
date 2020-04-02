@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 def qt_ui_library(name, ui, deps, **kwargs):
     """Compiles a QT UI file and makes a library for it.
 
@@ -29,8 +31,7 @@ def qt_ui_library(name, ui, deps, **kwargs):
         outs = ["ui_%s.h" % ui.split(".")[0]],
         cmd = "uic $(locations %s) -o $@" % ui,
     )
-
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
@@ -81,7 +82,7 @@ def qt_resource(name, files, **kwargs):
         outs = [outfile],
         cmd = "cp $(location %s) . && rcc --name %s --output $(OUTS) %s" % (qrc_file, rsrc_name, qrc_file),
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -112,9 +113,8 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
             cmd = "moc $(location %s) -o $@ -f'%s'" %
                   (hdr, header_path),
         )
-        _moc_srcs += [":" + moc_name]
-
-    native.cc_library(
+        _moc_srcs.append(":" + moc_name)
+    cc_library(
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
