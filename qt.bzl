@@ -92,8 +92,6 @@ def qt_resource(name, files, **kwargs):
 def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
     """Compiles a QT library and generates the MOC for it.
 
-    If a UI file is provided, then it is also compiled with UIC.
-
     Args:
       name: A name for the rule.
       srcs: The cpp files to compile.
