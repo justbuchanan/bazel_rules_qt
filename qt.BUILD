@@ -1,90 +1,71 @@
-package(default_visibility = ["//visibility:public"])
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_library")
 
-cc_library(
-    name = "qt_core",
-    hdrs = glob(["QtCore/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Core",
-    ],
-)
+QT_LIBRARIES = [
+    ("core", "QtCore", "Qt5Core", []),
+    ("network", "QtNetwork", "Qt5Network", []),
+    ("widgets", "QtWidgets", "Qt5Widgets", [":qt_core", ":qt_gui"]),
+    ("quick", "QtQuick", "Qt5Quick", [":qt_gui", ":qt_qml", ":qt_qml_models"]),
+    ("qml", "QtQml", "Qt5Qml", [":qt_core", ":qt_network"]),
+    ("qml_models", "QtQmlModels", "Qt5QmlModels", []),
+    ("gui", "QtGui", "Qt5Gui", [":qt_core"]),
+    ("opengl", "QtOpenGL", "Qt5OpenGL", []),
+]
 
-cc_library(
-    name = "qt_network",
-    hdrs = glob(["QtNetwork/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Network",
-    ],
-)
+[
+    cc_library(
+        name = "qt_%s_linux" % name,
+        # When being on Windows this glob will be empty
+        hdrs = glob(["%s/**" % include_folder], allow_empty=True),
+        includes = ["."],
+        linkopts = ["-l%s" % library_name],
+        # Available from Bazel 4.0.0
+        # target_compatible_with = ["@platforms//os:linux"],
+    )
+    for name, include_folder, library_name, _ in QT_LIBRARIES
+]
 
-cc_library(
-    name = "qt_widgets",
-    hdrs = glob(["QtWidgets/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Widgets",
-    ],
-    deps = [":qt_core", ":qt_gui"],
-)
+[
+    cc_import(
+        name = "qt_%s_windows_import" % name,
+        # When being on Linux this glob will be empty
+        hdrs = glob(["include/%s/**" % include_folder], allow_empty=True),
+        interface_library = "lib/%s.lib" % library_name,
+        shared_library = "bin/%s.dll" % library_name,
+        # Not available in cc_import (See: https://github.com/bazelbuild/bazel/issues/12745)
+        # target_compatible_with = ["@platforms//os:windows"],
+    )
+    for name, include_folder, library_name, _ in QT_LIBRARIES
+]
 
-cc_library(
-    name = "qt_quick",
-    hdrs = glob(["QtQuick/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Quick",
-    ],
-    deps = [
-        ":qt_gui",
-        ":qt_qml",
-        ":qt_qml_models",
-    ],
-)
+[
+    cc_library(
+        name = "qt_%s_windows" % name,
+        # When being on Linux this glob will be empty
+        hdrs = glob(["include/%s/**" % include_folder], allow_empty=True),
+        includes = ["include"],
+        # Available from Bazel 4.0.0
+        # target_compatible_with = ["@platforms//os:windows"],
+        deps = [":qt_%s_windows_import" % name],
+    )
+    for name, include_folder, _, _ in QT_LIBRARIES
+]
 
-cc_library(
-    name = "qt_qml",
-    hdrs = glob(["QtQml/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Qml",
-    ],
-    deps = [
-        ":qt_core",
-        ":qt_network",
-    ],
-)
+[
+    cc_library(
+        name = "qt_%s" % name,
+        visibility = ["//visibility:public"],
+        deps = dependencies + select({
+            "@platforms//os:linux": [":qt_%s_linux" % name],
+            "@platforms//os:windows": [":qt_%s_windows" % name],
+        }),
+    )
+    for name, _, _, dependencies in QT_LIBRARIES
+]
 
-cc_library(
-    name = "qt_qml_models",
-    linkopts = [
-        "-lQt5QmlModels",
-    ],
-    hdrs = glob(
-        ["QtQmlModels/**"],
-    ),
-    includes = ["."],
-)
-
-cc_library(
-    name = "qt_gui",
-    hdrs = glob(["QtGui/**"]),
-    includes = ["."],
-    linkopts = [
-        "-lQt5Gui",
-    ],
-    deps = [":qt_core"],
-)
-
-cc_library(
-    name = "qt_opengl",
-    hdrs = glob(["QtOpenGL/**"]),
-    includes = ["."],
-    linkopts = ["-lQt5OpenGL"],
-)
-
+# TODO: Make available also for Windows
 cc_library(
     name = "qt_3d",
+    # When being on Windows this glob will be empty
     hdrs = glob([
         "Qt3DAnimation/**",
         "Qt3DCore/**",
@@ -98,7 +79,7 @@ cc_library(
         "Qt3DQuickRender/**",
         "Qt3DQuickScene2D/**",
         "Qt3DRender/**",
-    ]),
+    ], allow_empty=True),
     includes = ["."],
     linkopts = [
         "-lQt53DAnimation",
@@ -114,4 +95,18 @@ cc_library(
         "-lQt53DQuickScene2D",
         "-lQt53DRender",
     ],
+    # Available from Bazel 4.0.0
+    # target_compatible_with = ["@platforms//os:linux"],
+)
+
+filegroup(
+    name = "uic",
+    srcs = ["bin/uic.exe"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "moc",
+    srcs = ["bin/moc.exe"],
+    visibility = ["//visibility:public"],
 )

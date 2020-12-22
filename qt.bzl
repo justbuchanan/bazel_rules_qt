@@ -29,7 +29,14 @@ def qt_ui_library(name, ui, deps, **kwargs):
         name = "%s_uic" % name,
         srcs = [ui],
         outs = ["ui_%s.h" % ui.split(".")[0]],
-        cmd = "uic $(locations %s) -o $@" % ui,
+        cmd = select({
+            "@platforms//os:linux": "uic $(locations %s) -o $@" % ui,
+            "@platforms//os:windows": "$(location @qt//:uic) $(locations %s) -o $@" % ui,
+        }),
+        tools = select({
+            "@platforms//os:linux": [],
+            "@platforms//os:windows": ["@qt//:uic"],
+        }),
     )
     cc_library(
         name = name,
@@ -136,8 +143,14 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
             name = moc_name,
             srcs = [hdr],
             outs = [moc_name + ".cc"],
-            cmd = "moc $(location %s) -o $@ -f'%s'" %
-                  (hdr, header_path),
+            cmd = select({
+                "@platforms//os:linux": "moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@platforms//os:windows": "$(location @qt//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+            }),
+            tools = select({
+                "@platforms//os:linux": [],
+                "@platforms//os:windows": ["@qt//:moc"],
+            }),
         )
         _moc_srcs.append(":" + moc_name)
     cc_library(
