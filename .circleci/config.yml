@@ -4,12 +4,16 @@ version: 2.1
 executors:
   main:
     docker:
-      - image: debian:buster
+      - image: ubuntu:focal-20201106
+        auth:
+          username: $DOCKER_HUB_LOGIN
+          password: $DOCKER_HUB_PASSWORD
 
 jobs:
   build:
     executor: main
     environment:
+      DEBIAN_FRONTEND: noninteractive
     steps:
       # setup bazel
       - run: echo 'export GOPATH="/go"' >> $BASH_ENV
@@ -27,4 +31,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - build
+      - build:
+          context:
+            - docker-hub-credentials
