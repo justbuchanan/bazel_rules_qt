@@ -1,0 +1,11 @@
+---
+tasks:
+  ubuntu1804:
+    shell_commands:
+      - pip3 install aqtinstall
+      - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
+    environment:
+      # Ideally we would write $HOME/Qt/5.12.10/gcc_64 but variable substitution is not happening
+      QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
+    build_targets:
+      - "//..."
