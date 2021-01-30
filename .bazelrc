@@ -1,0 +1,20 @@
+#############################
+## Terminal output options ##
+#############################
+
+# Print debug information while finding toolchains for a rule
+build --toolchain_resolution_debug
+
+# If a command fails, print out the full command line
+build --verbose_failures
+
+# Display the subcommands used to generate each target
+# Uncomment to see the effect, if you have it allways enabled it will increase quite a log the logs
+# build --subcommands=pretty_print
+
+#####################
+## Caching options ##
+#####################
+
+# Enable disk cache
+build --disk_cache=~/.bazel/disk_cache/
