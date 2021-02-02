@@ -38,6 +38,33 @@ def qt_ui_library(name, ui, deps, **kwargs):
         **kwargs
     )
 
+def _gencpp(ctx):
+    resource_files = [(f, ctx.actions.declare_file(f.path)) for f in ctx.files.files]
+    for target_file, output in resource_files:
+        ctx.actions.symlink(
+            output = output,
+            target_file = target_file,
+        )
+
+    args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
+    ctx.actions.run(
+        inputs = [resource for _, resource in resource_files] + [ctx.file.qrc],
+        outputs = [ctx.outputs.cpp],
+        arguments = args,
+        executable = "rcc",
+    )
+    return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
+
+gencpp = rule(
+    implementation = _gencpp,
+    attrs = {
+        "resource_name": attr.string(),
+        "files": attr.label_list(allow_files = True, mandatory = False),
+        "qrc": attr.label(allow_single_file = True, mandatory = True),
+        "cpp": attr.output(),
+    },
+)
+
 # generate a qrc file that lists each of the input files.
 def _genqrc(ctx):
     qrc_output = ctx.outputs.qrc
@@ -76,11 +103,12 @@ def qt_resource(name, files, **kwargs):
     rsrc_name = native.package_name().replace("/", "_") + "_" + name
 
     outfile = name + "_gen.cpp"
-    native.genrule(
+    gencpp(
         name = name + "_gen",
-        srcs = [qrc_file] + files,
-        outs = [outfile],
-        cmd = "cp $(location %s) . && rcc --name %s --output $(OUTS) %s" % (qrc_file, rsrc_name, qrc_file),
+        resource_name = rsrc_name,
+        files = files,
+        qrc = qrc_file,
+        cpp = outfile,
     )
     cc_library(
         name = name,
