@@ -46,19 +46,15 @@ def qt_ui_library(name, ui, deps, **kwargs):
     )
 
 def _gencpp(ctx):
-    resource_files = [(f, ctx.actions.declare_file(f.path)) for f in ctx.files.files]
-    for target_file, output in resource_files:
-        ctx.actions.symlink(
-            output = output,
-            target_file = target_file,
-        )
+    """_gencpp runs the "resource compiler" (rcc) included with QT to encode a
+    set of input files as snippet of C++, which is saved to a file. Later rules
+    compile this C++ code and link it into binaries."""
 
-    args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
-    ctx.actions.run(
-        inputs = [resource for _, resource in resource_files] + [ctx.file.qrc],
+    cmd = ["cat", ctx.file.qrc.path, "|", "rcc", "--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, "-"]
+    ctx.actions.run_shell(
+        command = " ".join(cmd),
         outputs = [ctx.outputs.cpp],
-        arguments = args,
-        executable = "rcc",
+        inputs = [ctx.file.qrc] + ctx.files.files,
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
