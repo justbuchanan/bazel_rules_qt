@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-  QString path = ":example/file1.txt";
+  QString path = ":tests/qt_resource/file1.txt";
   QFile file(path);
 
   if (!file.open(QIODevice::ReadOnly)) {
