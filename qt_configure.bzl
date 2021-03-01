@@ -1,22 +1,9 @@
-def _lookup_env_var(env, name, default = None):
-    """Lookup environment variable case-insensitve.
-
-    If a matching (case-insesitive) entry is found in the env dict both
-    the key and the value are returned. The returned key might differ from
-    name in casing.
-
-    If a matching key was found its value is returned otherwise
-    the default is returned.
-
-    Return a (key, value) tuple"""
-    for key, value in env.items():
-        if name.lower() == key.lower():
-            return (key, value)
-    return (name, default)
-
 def _get_env_var(repository_ctx, name, default = None):
     """Returns a value from an environment variable."""
-    return _lookup_env_var(repository_ctx.os.environ, name, default)[1]
+    for key, value in repository_ctx.os.environ.items():
+        if name == key:
+            return value
+    return default
 
 def qt_autoconf_impl(repository_ctx):
     """
