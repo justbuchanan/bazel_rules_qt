@@ -1,0 +1,21 @@
+environment:
+  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+  # Qt is not available compiled with Visual Studio 2019 but it is binary compatible
+  QT_VERSION: 5.9.9\msvc2017_64
+  VCVARSALLPATH: C:\"Program Files (x86)\Microsoft Visual Studio"\2019\Community\VC\Auxiliary\Build\vcvarsall.bat
+  VCVARSALL: x64
+  nodejs_version: "12.1.0"
+  npm_version: "6.14.4"
+  GYP_MSVS_VERSION: 2019
+  platform: "x64"
+
+init:
+  - call %VCVARSALLPATH% %VCVARSALL%
+  - set PATH=C:\Qt\%QT_VERSION%\bin;C:\Qt\Tools\QtCreator\bin;%PATH%;
+
+install:
+  - cmd: appveyor-retry powershell Install-Product node $env:nodejs_version x64
+
+build_script:
+  - npx @bazel/bazelisk version
+  - npx @bazel/bazelisk build //...
