@@ -1,6 +1,6 @@
 Circle CI (Linux) | AppVeyor (Windows)
 :---: | :---:
-[![ci status](https://circleci.com/gh/justbuchanan/bazel_rules_qt.png?circle-token=9077bf6ecc5554e3ddbdc4d3947784460eb1df72)](https://app.circleci.com/pipelines/github/justbuchanan/bazel_rules_qt?branch=master) | [![ci status](https://ci.appveyor.com/api/projects/status/<replace_for_project_id>/branch/master?svg=true)](https://ci.appveyor.com/project/justbuchanan/bazel-rules-qt/branch/master)
+[![ci status](https://circleci.com/gh/justbuchanan/bazel_rules_qt.png?circle-token=9077bf6ecc5554e3ddbdc4d3947784460eb1df72)](https://app.circleci.com/pipelines/github/justbuchanan/bazel_rules_qt?branch=master) | [![ci status](https://ci.appveyor.com/api/projects/status/3klljux2otuk69u2/branch/master?svg=true)](https://ci.appveyor.com/project/justbuchanan/bazel-rules-qt/branch/master)
 
 # Bazel rules for Qt
 
