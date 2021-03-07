@@ -6,11 +6,14 @@ Circle CI (Linux) | AppVeyor (Windows)
 
 These bazel rules and BUILD targets make it easy to use Qt from C++ projects built with bazel.
 
-Note that unlike many libraries used through bazel, qt is dynamically linked, meaning that the qt-dependent programs you build with bazel will use the qt libraries installed by the system package manager. Thus the users of your programs will also need to install qt.
+Note that unlike many libraries used through bazel, it requires Qt to be installed when building the application.
+Also keep in mind that this rules only allow to link Qt dynamically.
+In addition in the case of Linux it also requires Qt to be installed on the system when running it.
+For Windows, it is not needed to have Qt installed in the system to run your program. The needed dll files are copied to the output folder to make it self contained. However qt is still dynamically linked.
 
 ## Platform support
 
-This project currently only works on Linux, although eventually I'd like it to support Windows and Mac OS X as well.
+This project currently only works on Linux and Windows, eventually Mac OS X might be supported as well.
 
 ## Usage
 
