@@ -5,12 +5,13 @@ tasks:
       - pip3 install aqtinstall
       - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
       # - apt-get install -y qt5-default
-      - ls $HOME/Qt
+      # - ls $HOME/Qt
       - 'echo "home path is: $HOME"'
       # - tree $HOME/Qt
+      - 'echo "qt_dir=$QT_DIR"'
+      - ls $QT_DIR
     environment:
       # Ideally we would write $HOME/Qt/5.12.10/gcc_64 but variable substitution is not happening
-      # QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
-      QT_DIR: $HOME/Qt
+      QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
     build_targets:
       - "//..."
