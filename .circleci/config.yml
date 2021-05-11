@@ -20,7 +20,7 @@ jobs:
 
       - checkout
 
-      - run: apt-get install -y qt5-default
+      - run: apt-get install -y qt5-default qtdeclarative5-dev
       - run: bazel build //...
 
 
