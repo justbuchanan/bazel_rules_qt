@@ -50,7 +50,7 @@ def _gencpp(ctx):
     set of input files as snippet of C++, which is saved to a file. Later rules
     compile this C++ code and link it into binaries."""
 
-    cmd = ["cat", ctx.file.qrc.path, "|", "rcc", "--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, "-"]
+    cmd = ["type", ctx.file.qrc.path, "|", "rcc", "--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, "-"]
     ctx.actions.run_shell(
         command = " ".join(cmd),
         outputs = [ctx.outputs.cpp],
