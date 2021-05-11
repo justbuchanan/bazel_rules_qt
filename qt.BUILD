@@ -99,12 +99,14 @@ cc_library(
     # target_compatible_with = ["@platforms//os:linux"],
 )
 
+# TODO: remove in favor of toolchain-defined binary
 filegroup(
     name = "uic",
     srcs = ["bin/uic.exe"],
     visibility = ["//visibility:public"],
 )
 
+# TODO: remove in favor of toolchain-defined binary
 filegroup(
     name = "moc",
     srcs = ["bin/moc.exe"],

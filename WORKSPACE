@@ -11,3 +11,8 @@ new_local_repository(
     build_file = "@com_justbuchanan_rules_qt//:qt.BUILD",
     path = local_qt_path(),
 )
+
+register_toolchains(
+    "//tools:qt_linux_toolchain",
+    "//tools:qt_windows_toolchain",
+)
