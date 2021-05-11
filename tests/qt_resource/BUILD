@@ -12,7 +12,7 @@ qt_resource(
 # For now, test with:
 #   bazel run //tests/qt_resource:main
 cc_binary(
-    name = "main",
+    name = "example",
     srcs = ["main.cc"],
     deps = [
         ":resources",
