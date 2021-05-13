@@ -1,6 +1,7 @@
 workspace(name = "com_justbuchanan_rules_qt")
 
 load("@com_justbuchanan_rules_qt//:qt_configure.bzl", "qt_configure")
+load("@com_justbuchanan_rules_qt//tools:qt_toolchain.bzl", "register_qt_toolchains")
 
 qt_configure()
 
@@ -12,7 +13,4 @@ new_local_repository(
     path = local_qt_path(),
 )
 
-register_toolchains(
-    "//tools:qt_linux_toolchain",
-    "//tools:qt_windows_toolchain",
-)
+register_qt_toolchains()

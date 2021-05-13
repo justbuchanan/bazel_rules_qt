@@ -21,3 +21,9 @@ qt_toolchain = rule(
         "moc_path": attr.string(),
     },
 )
+
+def register_qt_toolchains():
+    native.register_toolchains(
+        "//tools:qt_linux_toolchain",
+        "//tools:qt_windows_toolchain",
+    )
