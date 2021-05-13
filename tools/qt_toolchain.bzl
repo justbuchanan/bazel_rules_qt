@@ -24,6 +24,6 @@ qt_toolchain = rule(
 
 def register_qt_toolchains():
     native.register_toolchains(
-        "//tools:qt_linux_toolchain",
-        "//tools:qt_windows_toolchain",
+        "@com_justbuchanan_rules_qt//tools:qt_linux_toolchain",
+        "@com_justbuchanan_rules_qt//tools:qt_windows_toolchain",
     )
