@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 load(":qt_toolchain.bzl", "qt_toolchain")
 
 toolchain_type(name = "toolchain_type")
@@ -27,7 +29,7 @@ toolchain(
         "@platforms//os:linux",
     ],
     toolchain = ":qt_linux",
-    toolchain_type = ":toolchain_type",
+    toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
 )
 
 toolchain(
@@ -39,5 +41,5 @@ toolchain(
         "@platforms//os:windows",
     ],
     toolchain = ":qt_windows",
-    toolchain_type = ":toolchain_type",
+    toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
 )
