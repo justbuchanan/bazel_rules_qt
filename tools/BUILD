@@ -1,6 +1,6 @@
 load(":qt_toolchain.bzl", "qt_toolchain")
 
-toolchain_type(name = "qt_toolchain_type")
+toolchain_type(name = "toolchain_type")
 
 qt_toolchain(
     name = "qt_linux",
@@ -27,7 +27,7 @@ toolchain(
         "@platforms//os:linux",
     ],
     toolchain = ":qt_linux",
-    toolchain_type = ":qt_toolchain_type",
+    toolchain_type = ":toolchain_type",
 )
 
 toolchain(
@@ -39,5 +39,5 @@ toolchain(
         "@platforms//os:windows",
     ],
     toolchain = ":qt_windows",
-    toolchain_type = ":qt_toolchain_type",
+    toolchain_type = ":toolchain_type",
 )
