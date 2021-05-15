@@ -27,6 +27,7 @@ toolchain(
     ],
     target_compatible_with = [
         "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_linux",
     toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
@@ -39,6 +40,7 @@ toolchain(
     ],
     target_compatible_with = [
         "@platforms//os:windows",
+        "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_windows",
     toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
