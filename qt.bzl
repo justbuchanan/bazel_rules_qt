@@ -18,19 +18,13 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
 def _gen_ui_header(ctx):
+    info = ctx.toolchains["@com_justbuchanan_rules_qt//tools:toolchain_type"].qtinfo
     args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
     ctx.actions.run(
         inputs = [ctx.file.ui_file],
         outputs = [ctx.outputs.ui_header],
         arguments = args,
-        executable = select({
-            "@platforms//os:linux": "uic",
-            "@platforms//os:windows": "$(location @qt//:uic)",
-        }),
-        tools = select({
-            "@platforms//os:linux": [],
-            "@platforms//os:windows": ["@qt//:uic"],
-        }),
+        executable = info.uic_path,
     )
     return [OutputGroupInfo(ui_header = depset([ctx.outputs.ui_header]))]
 
@@ -39,7 +33,8 @@ gen_ui_header = rule(
     attrs = {
         "ui_file": attr.label(allow_single_file = True, mandatory = True),
         "ui_header": attr.output(),
-    }
+    },
+    toolchains = ["@com_justbuchanan_rules_qt//tools:toolchain_type"],
 )
 
 def qt_ui_library(name, ui, deps, **kwargs):
