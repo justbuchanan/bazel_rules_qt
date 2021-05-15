@@ -17,6 +17,31 @@
 
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+def _gen_ui_header(ctx):
+    args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
+    ctx.actions.run(
+        inputs = [ctx.file.ui_file],
+        outputs = [ctx.outputs.ui_header],
+        arguments = args,
+        executable = select({
+            "@platforms//os:linux": "uic",
+            "@platforms//os:windows": "$(location @qt//:uic)",
+        }),
+        tools = select({
+            "@platforms//os:linux": [],
+            "@platforms//os:windows": ["@qt//:uic"],
+        }),
+    )
+    return [OutputGroupInfo(ui_header = depset([ctx.outputs.ui_header]))]
+
+gen_ui_header = rule(
+    implementation = _gen_ui_header,
+    attrs = {
+        "ui_file": attr.label(allow_single_file = True, mandatory = True),
+        "ui_header": attr.output(),
+    }
+)
+
 def qt_ui_library(name, ui, deps, **kwargs):
     """Compiles a QT UI file and makes a library for it.
 
@@ -25,18 +50,10 @@ def qt_ui_library(name, ui, deps, **kwargs):
       src: The ui file to compile.
       deps: cc_library dependencies for the library.
     """
-    native.genrule(
+    gen_ui_header(
         name = "%s_uic" % name,
-        srcs = [ui],
-        outs = ["ui_%s.h" % ui.split(".")[0]],
-        cmd = select({
-            "@platforms//os:linux": "uic $(locations %s) -o $@" % ui,
-            "@platforms//os:windows": "$(location @qt//:uic) $(locations %s) -o $@" % ui,
-        }),
-        tools = select({
-            "@platforms//os:linux": [],
-            "@platforms//os:windows": ["@qt//:uic"],
-        }),
+        ui_file = ui,
+        ui_header = "ui_%s.h" % ui.split(".")[0],
     )
     cc_library(
         name = name,
