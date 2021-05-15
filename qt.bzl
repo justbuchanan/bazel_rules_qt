@@ -46,6 +46,8 @@ def qt_ui_library(name, ui, deps, **kwargs):
     )
 
 def _gencpp(ctx):
+    info = ctx.toolchains["@com_justbuchanan_rules_qt//tools:toolchain_type"].qtinfo
+
     resource_files = [(f, ctx.actions.declare_file(f.path)) for f in ctx.files.files]
     for target_file, output in resource_files:
         ctx.actions.symlink(
@@ -58,7 +60,7 @@ def _gencpp(ctx):
         inputs = [resource for _, resource in resource_files] + [ctx.file.qrc],
         outputs = [ctx.outputs.cpp],
         arguments = args,
-        executable = "rcc",
+        executable = info.rcc_path,
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
@@ -70,6 +72,7 @@ gencpp = rule(
         "qrc": attr.label(allow_single_file = True, mandatory = True),
         "cpp": attr.output(),
     },
+    toolchains = ["@com_justbuchanan_rules_qt//tools:toolchain_type"],
 )
 
 # generate a qrc file that lists each of the input files.
