@@ -7,5 +7,6 @@ tasks:
     environment:
       # Ideally we would write $HOME/Qt/5.12.10/gcc_64 but variable substitution is not happening
       QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
-    build_targets:
-      - "//..."
+    # Comment back once the Qt toolchain is implemented and can work on the Bazel CI
+    #build_targets:
+    #  - "//..."
