@@ -1,15 +1,16 @@
 package(default_visibility = ["//visibility:public"])
 
 load(":qt_toolchain.bzl", "qt_toolchain")
+load("@local_config_qt//:local_qt.bzl", "local_qt_bin_dir")
 
 toolchain_type(name = "toolchain_type")
 
 qt_toolchain(
     name = "qt_linux",
     # TODO: determine paths in qt_configure.bzl
-    moc_path = "/usr/bin/moc",
-    rcc_path = "/usr/bin/rcc",
-    uic_path = "/usr/bin/uic",
+    moc_path = local_qt_bin_dir() + "/moc",
+    rcc_path = local_qt_bin_dir() + "/rcc",
+    uic_path = local_qt_bin_dir() + "/uic",
 )
 
 qt_toolchain(
