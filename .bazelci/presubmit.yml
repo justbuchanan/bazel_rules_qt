@@ -14,6 +14,8 @@ tasks:
       # - export "PATH=$QT_DIR/bin:$PATH"
       - 'echo "path var: $PATH"'
       - which rcc
+      - ls "$QT_DIR"
+      - ls "$QT_BIN_DIR"
       - ls /var/lib/buildkite-agent/Qt/5.12.10
       - tree /var/lib/buildkite-agent/Qt/5.12.10
     environment:
