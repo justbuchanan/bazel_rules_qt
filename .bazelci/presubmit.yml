@@ -16,6 +16,7 @@ tasks:
       - which rcc
       - ls "$QT_DIR"
       - ls "$QT_BIN_DIR"
+      - echo "BIN DIR - 1"
       - ls /var/lib/buildkite-agent/Qt/5.12.10
       # - tree /var/lib/buildkite-agent/Qt/5.12.10
     environment:
