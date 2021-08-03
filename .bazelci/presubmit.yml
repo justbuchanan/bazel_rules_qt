@@ -22,7 +22,7 @@ tasks:
     environment:
       # Ideally we would write $HOME/Qt/5.12.10/gcc_64 but variable substitution is not happening
       QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
-      QT_BIN_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
+      QT_BIN_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64/bin
       # PATH: "$QT_DIR/bin:$PATH"
       PATH: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/go1.15.2.linux-amd64/bin:/opt/swift-5.2.5-RELEASE-ubuntu18.04/usr/bin
     build_targets:

@@ -50,11 +50,7 @@ def qt_autoconf_impl(repository_ctx):
             qt_path = qt_path_with_include
 
     # TODO: windows support
-    qt_bin_dir = "/usr/bin"
-    qt_bin_dir_env = _get_env_var(repository_ctx, "QT_BIN_DIR")
-    if qt_bin_dir_env != "":
-        qt_bin_dir = qt_bin_dir_env
-
+    qt_bin_dir = _get_env_var(repository_ctx, "QT_BIN_DIR", default="/usr/bin")
     repository_ctx.file("BUILD", "# empty BUILD file so that bazel sees this as a valid package directory")
     repository_ctx.template(
         "local_qt.bzl",
