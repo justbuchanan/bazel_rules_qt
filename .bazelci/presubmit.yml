@@ -3,7 +3,7 @@ tasks:
   ubuntu2004:
     platform: ubuntu2004
     shell_commands:
-      - "sudo apt update && sudo apt -y install qt5-default"
+      - "sudo apt update && sudo apt -y install qt5-default qtdeclarative5-dev"
       # - pip3 install aqtinstall
       - ls /usr/include/x86_64-linux-gnu/qt5 || true
       - ls /usr/include/qt || true
