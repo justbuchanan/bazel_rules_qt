@@ -1,6 +1,7 @@
 ---
 tasks:
-  ubuntu1804:
+  ubuntu2004:
+    platform: ubuntu2004
     shell_commands:
       - pip3 install aqtinstall
       - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
