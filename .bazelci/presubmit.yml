@@ -3,6 +3,7 @@ tasks:
   ubuntu2004:
     platform: ubuntu2004
     shell_commands:
+      - "sudo apt update && sudo apt -y install qt5-default"
       - pip3 install aqtinstall
       - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
       # - apt-get install -y qt5-default
