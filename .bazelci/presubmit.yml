@@ -4,28 +4,31 @@ tasks:
     platform: ubuntu2004
     shell_commands:
       - "sudo apt update && sudo apt -y install qt5-default"
-      - pip3 install aqtinstall
-      - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
-      # - apt-get install -y qt5-default
-      # - ls $HOME/Qt
-      - 'echo "home path is: $HOME"'
-      # - tree $HOME/Qt
-      - 'echo "qt_dir=$QT_DIR"'
-      - ls $QT_DIR
-      - ls $QT_DIR/bin
-      # - export "PATH=$QT_DIR/bin:$PATH"
-      - 'echo "path var: $PATH"'
+      # - pip3 install aqtinstall
+      - ls /usr/include/x86_64-linux-gnu/qt5 || true
+      - ls /usr/include/qt || true
+      - ls /usr/include/qt5 || true
+      # - python3 -m aqt install --outputdir $HOME/Qt 5.12.10 linux desktop
+      # # - apt-get install -y qt5-default
+      # # - ls $HOME/Qt
+      # - 'echo "home path is: $HOME"'
+      # # - tree $HOME/Qt
+      # - 'echo "qt_dir=$QT_DIR"'
+      # - ls $QT_DIR
+      # - ls $QT_DIR/bin
+      # # - export "PATH=$QT_DIR/bin:$PATH"
+      # - 'echo "path var: $PATH"'
       - which rcc
-      - ls "$QT_DIR"
-      - ls "$QT_BIN_DIR"
-      - echo "BIN DIR - 1"
-      - ls /var/lib/buildkite-agent/Qt/5.12.10
+      # - ls "$QT_DIR"
+      # - ls "$QT_BIN_DIR"
+      # - echo "BIN DIR - 1"
+      # - ls /var/lib/buildkite-agent/Qt/5.12.10
       # - tree /var/lib/buildkite-agent/Qt/5.12.10
     environment:
       # Ideally we would write $HOME/Qt/5.12.10/gcc_64 but variable substitution is not happening
-      QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
-      QT_BIN_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64/bin
-      # PATH: "$QT_DIR/bin:$PATH"
+      # QT_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64
+      # QT_BIN_DIR: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64/bin
+      # # PATH: "$QT_DIR/bin:$PATH"
       PATH: /var/lib/buildkite-agent/Qt/5.12.10/gcc_64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/go1.15.2.linux-amd64/bin:/opt/swift-5.2.5-RELEASE-ubuntu18.04/usr/bin
     build_targets:
       - "//..."
