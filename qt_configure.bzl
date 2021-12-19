@@ -39,9 +39,9 @@ def qt_autoconf_impl(repository_ctx):
     if repository_ctx.path(default_qt_path).exists:
         print("Installation available on the default path: ", default_qt_path)
 
-    qt_path = _get_env_var(repository_ctx, "QT_DIR", default_qt_path)
+    qt_path = _get_env_var(repository_ctx, "BAZEL_RULES_QT_DIR", default_qt_path)
     if qt_path != default_qt_path:
-        print("However QT_DIR is defined and will be used: ", qt_path)
+        print("However BAZEL_RULES_QT_DIR is defined and will be used: ", qt_path)
 
         # In Linux in case that we have a standalone installation, we need to provide the path inside the include folder
         qt_path_with_include = qt_path + "/include"
