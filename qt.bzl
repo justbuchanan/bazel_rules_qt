@@ -161,10 +161,12 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
             cmd = select({
                 "@platforms//os:linux": "moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@platforms//os:osx": "moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
                 "@platforms//os:linux": [],
                 "@platforms//os:windows": ["@qt//:moc"],
+                "@platforms//os:osx": [],
             }),
         )
         _moc_srcs.append(":" + moc_name)

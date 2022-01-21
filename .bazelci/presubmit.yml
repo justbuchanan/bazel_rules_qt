@@ -6,3 +6,11 @@ tasks:
       - "sudo apt update && sudo apt -y install qt5-default qtdeclarative5-dev"
     build_targets:
       - "//..."
+  # Uncommented since `brew install qt@5` does currently not work
+  # see https://github.com/bazelbuild/continuous-integration/issues/1330
+  # TODO: wait until a solution is provided
+  #macos:
+  #  shell_commands:
+  #    - "brew install qt@5"
+  #  build_targets:
+  #    - "//..."

@@ -20,6 +20,14 @@ qt_toolchain(
     uic_path = "uic",
 )
 
+qt_toolchain(
+    name = "qt_osx",
+    # TODO: determine paths in qt_configure.bzl
+    moc_path = "/usr/local/opt/qt5/bin/moc",
+    rcc_path = "/usr/local/opt/qt5/bin/rcc",
+    uic_path = "/usr/local/opt/qt5/bin/uic",
+)
+
 toolchain(
     name = "qt_linux_toolchain",
     exec_compatible_with = [
@@ -43,5 +51,18 @@ toolchain(
         "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_windows",
+    toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
+)
+
+toolchain(
+    name = "qt_osx_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:osx",
+    ],
+    target_compatible_with = [
+        "@platforms//os:osx",
+        "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":qt_osx",
     toolchain_type = "@com_justbuchanan_rules_qt//tools:toolchain_type",
 )
