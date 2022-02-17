@@ -4,22 +4,22 @@
 
 # Bazel rules for Qt
 
-These bazel rules and BUILD targets make it easy to use Qt from C++ projects built with bazel.
+These Bazel rules and BUILD targets make it easy to use Qt from C++ projects built with Bazel.
 
-Note that unlike many libraries used through bazel, it requires Qt to be installed when building the application.
-Also keep in mind that this rules only allow to link Qt dynamically.
+Note that unlike many libraries used through Bazel, it requires Qt to be installed when building the application.
+Also keep in mind that these rules only allow to link Qt dynamically.
 In addition in the case of Linux it also requires Qt to be installed on the system when running it.
-For Windows, it is not needed to have Qt installed in the system to run your program. The needed dll files are copied to the output folder to make it self contained. However qt is still dynamically linked.
+For Windows, it is not needed to have Qt installed in the system to run your program. The needed DLL files are copied to the output folder to make it self-contained. However, Qt is still dynamically linked.
 
 ## Platform support
 
-This project currently only works on Linux and Windows, eventually Mac OS X might be supported as well.
+This project currently works on Linux, Windows, and macOS.
 
 ## Usage
 
-You can either copy the qt.BUILD and qt.bzl files into your project, add this project as a submodule if you're using git or use a git_repository rule to fetch the rules.
+You can either copy the `qt.BUILD` and `qt.bzl` files into your project, add this project as a submodule if you're using git, or use a `git_repository` rule to fetch the rules.
 
-Configure your WORKSPACE to include the qt libraries:
+Configure your `WORKSPACE` to include the Qt libraries:
 
 ```python
 # WORKSPACE
@@ -48,7 +48,7 @@ load("@com_justbuchanan_rules_qt//tools:qt_toolchain.bzl", "register_qt_toolchai
 register_qt_toolchains()
 ```
 
-Use the build rules provided by qt.bzl to build your project. See qt.bzl for which rules are available.
+Use the build rules provided by `qt.bzl` to build your project. See `qt.bzl` for which rules are available.
 
 ```python
 # BUILD

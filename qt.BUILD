@@ -27,7 +27,7 @@ QT_LIBRARIES = [
 [
     cc_import(
         name = "qt_%s_windows_import" % name,
-        # When being on Linux this glob will be empty
+        # When being on Linux or macOS this glob will be empty
         hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
         interface_library = "lib/%s.lib" % library_name,
         shared_library = "bin/%s.dll" % library_name,
@@ -40,7 +40,7 @@ QT_LIBRARIES = [
 [
     cc_library(
         name = "qt_%s_windows" % name,
-        # When being on Linux this glob will be empty
+        # When being on Linux or macOS this glob will be empty
         hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
         includes = ["include"],
         # Available from Bazel 4.0.0
@@ -52,11 +52,27 @@ QT_LIBRARIES = [
 
 [
     cc_library(
+        name = "qt_%s_osx" % name,
+        # When being on Windows or Linux this glob will be empty
+        hdrs = glob(["%s/**" % include_folder], allow_empty = True),
+        includes = ["."],
+        linkopts = ["-F/usr/local/opt/qt5/lib"] + [
+            "-framework %s" % library_name.replace("5", "") # macOS qt libs do not contain a 5 - e.g. instead of Qt5Core the lib is called QtCore
+            ],
+        # Available from Bazel 4.0.0
+        # target_compatible_with = ["@platforms//os:osx"],
+    )
+    for name, include_folder, library_name, _ in QT_LIBRARIES
+]
+
+[
+    cc_library(
         name = "qt_%s" % name,
         visibility = ["//visibility:public"],
         deps = dependencies + select({
             "@platforms//os:linux": [":qt_%s_linux" % name],
             "@platforms//os:windows": [":qt_%s_windows" % name],
+            "@platforms//os:osx": [":qt_%s_osx" % name],
         }),
     )
     for name, _, _, dependencies in QT_LIBRARIES

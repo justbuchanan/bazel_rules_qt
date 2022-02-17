@@ -33,6 +33,9 @@ def qt_autoconf_impl(repository_ctx):
         default_qt_path = "/usr/include/x86_64-linux-gnu/qt5"
         if not repository_ctx.path(default_qt_path).exists:
             default_qt_path = "/usr/include/qt"
+    elif os_name.find("mac") != -1:
+        # assume Qt was installed using `brew install qt@5`
+        default_qt_path = "/usr/local/opt/qt5"
     else:
         fail("Unsupported OS: %s" % os_name)
 
@@ -47,7 +50,7 @@ def qt_autoconf_impl(repository_ctx):
         qt_path_with_include = qt_path + "/include"
         if is_linux_machine and repository_ctx.path(qt_path_with_include).exists:
             qt_path = qt_path_with_include
-
+   
     repository_ctx.file("BUILD", "# empty BUILD file so that bazel sees this as a valid package directory")
     repository_ctx.template(
         "local_qt.bzl",
