@@ -14,16 +14,19 @@ def qt_autoconf_impl(repository_ctx):
     """
     os_name = repository_ctx.os.name.lower()
     is_linux_machine = False
+    is_windows_machine = False
     if os_name.find("windows") != -1:
+        is_windows_machine = True
         # Inside this folder, in Windows you can find include, lib and bin folder
         default_qt_path = "C:\\\\Qt\\\\5.9.9\\\\msvc2017_64\\\\"
         # If predefined path does not exist search for an alternative e.g. "C:\\\\Qt\\\\5.12.10\\\\msvc2017_64\\\\"
         if not repository_ctx.path(default_qt_path).exists:
             win_path_env = _get_env_var(repository_ctx, "PATH")
-            start_index = win_path_env.index("C:\\Qt\\5.")
-            end_index = win_path_env.index("msvc2017_64\\", start_index) + len("msvc2017_64")
-            default_qt_path = win_path_env[start_index:end_index+1]
-            default_qt_path = default_qt_path.replace('\\', "\\\\")
+            if win_path_env.find("C:\\Qt\\5.") != -1:
+                start_index = win_path_env.index("C:\\Qt\\5.")
+                end_index = win_path_env.index("msvc2017_64\\", start_index) + len("msvc2017_64")
+                default_qt_path = win_path_env[start_index:end_index+1]
+                default_qt_path = default_qt_path.replace('\\', "\\\\")
     elif os_name.find("linux") != -1:
         is_linux_machine = True
 
@@ -46,6 +49,10 @@ def qt_autoconf_impl(repository_ctx):
     if qt_path != default_qt_path:
         print("However BAZEL_RULES_QT_DIR is defined and will be used: ", qt_path)
 
+        # On Windows, replace "\" by "\\"
+        if is_windows_machine:
+            qt_path = qt_path.replace('\\', "\\\\")
+     
         # In Linux in case that we have a standalone installation, we need to provide the path inside the include folder
         qt_path_with_include = qt_path + "/include"
         if is_linux_machine and repository_ctx.path(qt_path_with_include).exists:
